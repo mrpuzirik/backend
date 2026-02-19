@@ -1,0 +1,66 @@
+/* Загальні стилі */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 40px;
+    color: #333;
+}
+
+/* Заголовки */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* Контейнер карток */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap; /* щоб картки переносились на новий ряд */
+    gap: 20px;       /* відстань між картками */
+    justify-content: center; /* центруємо рядки */
+}
+
+/* Картки */
+.card {
+    flex: 1 1 350px; /* мін ширина 250px, можна рости, займаючи місце */
+    max-width: 400px; /* необов'язково, щоб картки не були надто великими */
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.details {
+    background: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Обмеження ширини для сторінки деталей */
+.details {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+/* Кнопки */
+a {
+    display: inline-block;
+    margin-top: 10px;
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #3490dc;
+    padding: 7px 12px;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+a:hover {
+    background-color: #2779bd;
+}
+
+/* Розділювач */
+hr {
+    border: none;
+    border-top: 1px solid #eee;
+    margin: 15px 0;
+}
