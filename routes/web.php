@@ -41,3 +41,11 @@ Route::get('/create-table1', function () {
 
 Route::get('/apartments', [ApartmentController::class, 'index']);
 Route::get('/apartment/{id}', [ApartmentController::class, 'show']);
+
+Route::get('/create', [ApartmentController::class, 'create']);
+Route::post('/store', [ApartmentController::class, 'store']);
+
+Route::get('/edit/{id}', [ApartmentController::class, 'edit']);
+Route::post('/update/{id}', [ApartmentController::class, 'update']);
+
+Route::get('/delete/{id}', [ApartmentController::class, 'destroy']);
