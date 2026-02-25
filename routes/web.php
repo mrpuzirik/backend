@@ -49,3 +49,6 @@ Route::get('/edit/{id}', [ApartmentController::class, 'edit']);
 Route::post('/update/{id}', [ApartmentController::class, 'update']);
 
 Route::get('/delete/{id}', [ApartmentController::class, 'destroy']);
+
+Route::get('/statistics', [ApartmentController::class, 'statistics']);
+Route::get('/search', [ApartmentController::class, 'search']);

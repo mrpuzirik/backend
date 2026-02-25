@@ -11,10 +11,27 @@
     <div class="top-bar">
         <h1>Список квартир</h1>
 
+        <a href="/statistics" class="btn btn-primary">
+            Статистика
+        </a>
         <a href="/create" class="btn btn-success">
             Створити квартиру
         </a>
     </div>
+
+    <form method="GET" action="/search" class="search-form">
+
+        <input type="text" name="keyword" placeholder="Ключове слово">
+
+        <input type="number" name="min_price" placeholder="Мін. ціна">
+
+        <input type="number" name="max_price" placeholder="Макс. ціна">
+
+        <button type="submit" class="btn btn-primary">
+            Пошук
+        </button>
+
+    </form>
 
     <div style="margin-bottom:20px;">
         <a href="/apartments?sort=price" class="btn btn-primary">

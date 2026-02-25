@@ -95,4 +95,88 @@ class ApartmentController extends Controller
         return redirect('/apartments');
     }
 
+    public function statistics()
+    {
+        $ownersCount = DB::selectOne("SELECT COUNT(*) as count FROM owners");
+        $apartmentsCount = DB::selectOne("SELECT COUNT(*) as count FROM apartments");
+
+        $ownersLastMonth = DB::selectOne("
+        SELECT COUNT(*) as count
+        FROM owners
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+    ");
+
+        $apartmentsLastMonth = DB::selectOne("
+        SELECT COUNT(*) as count
+        FROM apartments
+        WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+    ");
+
+        $lastOwner = DB::selectOne("
+        SELECT * FROM owners
+        ORDER BY created_at DESC
+        LIMIT 1
+    ");
+
+        $topOwner = DB::selectOne("
+        SELECT owners.name, COUNT(apartments.id) as apartments_count
+        FROM owners
+        LEFT JOIN apartments ON owners.id = apartments.owner_id
+        GROUP BY owners.id, owners.name
+        ORDER BY apartments_count DESC
+        LIMIT 1
+    ");
+
+        return view('statistics', compact(
+            'ownersCount',
+            'apartmentsCount',
+            'ownersLastMonth',
+            'apartmentsLastMonth',
+            'lastOwner',
+            'topOwner'
+        ));
+    }
+
+    public function search(Request $request)
+    {
+        $keyword = $request->get('keyword');
+        $min = $request->get('min_price');
+        $max = $request->get('max_price');
+
+        $sql = "
+        SELECT apartments.*, owners.name
+        FROM apartments
+        JOIN owners ON apartments.owner_id = owners.id
+        WHERE 1=1
+    ";
+
+        $params = [];
+
+        if ($keyword) {
+            $sql .= " AND (district LIKE ? OR owners.name LIKE ?
+            OR CAST(floor AS CHAR) LIKE ? OR CAST(rooms AS CHAR) LIKE ?)";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+
+        if ($min && $max) {
+            $sql .= " AND price BETWEEN ? AND ?";
+            $params[] = $min;
+            $params[] = $max;
+        }
+        elseif ($min) {
+            $sql .= " AND price >= ?";
+            $params[] = $min;
+        }
+        elseif ($max) {
+            $sql .= " AND price <= ?";
+            $params[] = $max;
+        }
+
+        $apartments = DB::select($sql, $params);
+
+        return view('apartments', compact('apartments'));
+    }
 }
