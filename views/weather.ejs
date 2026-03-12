@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Погода — <%= currentCity || 'Оберіть місто' %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Unbounded:wght@300;600;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body>
+<div class="layout">
+
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">Метеодані</div>
+            <h1>Погода<br/>у світі</h1>
+        </div>
+
+        <div class="nav-label">Міста</div>
+
+        <% cities.forEach(city => { %>
+            <a href="/weather/<%= city.slug %>"
+               class="<%= (currentCity && currentCity.toLowerCase().includes(city.slug.toLowerCase().split(' ')[0])) ? 'active' : '' %>">
+                <span><%= city.flag %></span>
+                <%= city.name %>
+                <% if (city.author) { %><span class="author-tag">МОЄ МІСТО</span><% } %>
+            </a>
+        <% }) %>
+
+        <form action="/weather/search" method="GET" class="search-form">
+            <input
+                    type="text"
+                    name="city"
+                    placeholder="Назва міста..."
+                    required
+                    minlength="2"
+            />
+            <button type="submit">Знайти</button>
+        </form>
+
+    </nav>
+
+    <main>
+        <% if (!weather && !error) { %>
+            <div class="page-title">Оберіть місто</div>
+            <div class="page-subtitle">ВИБЕРІТЬ МІСТО З МЕНЮ АБО СКОРИСТАЙТЕСЬ ПОШУКОМ</div>
+        <% } else { %>
+            <div class="page-title"><%= currentCity %></div>
+            <div class="page-subtitle">ПОТОЧНА ПОГОДА</div>
+        <% } %>
+
+        <% if (error) { %>
+            <div class="notice error"><%= error %></div>
+        <% } else if (weather) { %>
+            <div class="weather-card">
+                <div class="weather-top">
+                    <div>
+                        <div class="weather-city"><%= weather.name %></div>
+                        <div class="weather-country">
+                            <%= weather.sys.country %> ·
+                            <%= new Date().toLocaleDateString('uk-UA', { weekday:'long', day:'numeric', month:'long' }) %>
+                        </div>
+                    </div>
+                    <div class="weather-icon-wrap">
+                        <div>
+                            <div class="temp-big"><%= Math.round(weather.main.temp) %><sup>°C</sup></div>
+                            <div class="weather-desc"><%= weather.weather[0].description %></div>
+                        </div>
+                        <img src="<%= iconUrl %>" alt="<%= weather.weather[0].description %>" />
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Відчувається як</div>
+                        <div class="stat-value"><%= Math.round(weather.main.feels_like) %><span class="stat-unit">°C</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Вологість</div>
+                        <div class="stat-value"><%= weather.main.humidity %><span class="stat-unit">%</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Тиск</div>
+                        <div class="stat-value"><%= weather.main.pressure %><span class="stat-unit">hPa</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Вітер</div>
+                        <div class="stat-value"><%= weather.wind.speed %><span class="stat-unit">м/с</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Видимість</div>
+                        <div class="stat-value"><%= weather.visibility ? (weather.visibility/1000).toFixed(1) : '—' %><span class="stat-unit">км</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Хмарність</div>
+                        <div class="stat-value"><%= weather.clouds.all %><span class="stat-unit">%</span></div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Схід сонця</div>
+                        <div class="stat-value small">
+                            <%= new Date((weather.sys.sunrise + weather.timezone + new Date().getTimezoneOffset() * -60) * 1000).toLocaleTimeString('uk-UA', {hour:'2-digit', minute:'2-digit', timeZone:'UTC'}) %>
+                        </div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Захід сонця</div>
+                        <div class="stat-value small">
+                            <%= new Date((weather.sys.sunset + weather.timezone + new Date().getTimezoneOffset() * -60) * 1000).toLocaleTimeString('uk-UA', {hour:'2-digit', minute:'2-digit', timeZone:'UTC'}) %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </main>
+
+</div>
+</body>
+</html>
