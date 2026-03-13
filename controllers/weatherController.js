@@ -10,6 +10,27 @@ function index(req, res) {
   });
 }
 
+async function weather(req, res) {
+  try {
+    const data = await fetchWeather('Kyiv');
+    res.render('weather', {
+      cities: getCities(),
+      weather: data,
+      iconUrl: getIconUrl(data.weather[0].icon),
+      currentCity: data.name,
+      error: null,
+    });
+  } catch (err) {
+    res.render('weather', {
+      cities: getCities(),
+      weather: null,
+      iconUrl: null,
+      currentCity: null,
+      error: 'Не вдалося отримати дані про погоду.',
+    });
+  }
+}
+
 function search(req, res) {
   const city = req.query.city?.trim();
   if (!city || city.length < 2) return res.redirect('/weather/');
@@ -51,4 +72,4 @@ async function getCity(req, res) {
   }
 }
 
-module.exports = { index, search, getCity };
+module.exports = { index, weather, search, getCity };

@@ -54,7 +54,14 @@ nav.sidebar {
   margin-bottom: 1.5rem;
 }
 
-.sidebar-header .logo {
+.sidebar-header a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar-header .logo,
+.sidebar-header a .logo {
   font-family: 'Unbounded', sans-serif;
   font-size: 0.65rem;
   font-weight: 300;
@@ -64,7 +71,8 @@ nav.sidebar {
   margin-bottom: 0.4rem;
 }
 
-.sidebar-header h1 {
+.sidebar-header h1,
+.sidebar-header a h1 {
   font-family: 'Unbounded', sans-serif;
   font-size: 1.15rem;
   font-weight: 600;
@@ -81,7 +89,7 @@ nav.sidebar {
   margin-bottom: 0.6rem;
 }
 
-nav.sidebar a {
+nav.sidebar a:not(.sidebar-header a) {
   display: flex;
   align-items: center;
   gap: 0.75rem;
