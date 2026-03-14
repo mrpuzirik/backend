@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body>
+<div class="container">
+    <h1><%= title %></h1>
+    <div class="centre-wrapper">
+        <div class="card">
+            <p><strong>Район:</strong> <%= apartment.district %></p>
+            <p><strong>Поверх:</strong> <%= apartment.floor %></p>
+            <p><strong>Площа:</strong> <%= apartment.area %> м²</p>
+            <p><strong>Кількість кімнат:</strong> <%= apartment.rooms %></p>
+            <p><strong>Власник:</strong> <%= apartment.owner.fullName %></p>
+            <p><strong>Телефон:</strong> <%= apartment.owner.phone %></p>
+            <p><strong>Email:</strong> <%= apartment.owner.email %></p>
+            <p><strong>Ціна:</strong> $<%= apartment.price %></p>
+            <p><strong>Створено:</strong> <%= apartment.createdAt.toLocaleString() %></p>
+
+            <div class="actions">
+                <a class="btn btn-warning" href="/apartments/<%= apartment._id %>/edit">Редагувати</a>
+                <a class="btn btn-secondary" href="/">Назад</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

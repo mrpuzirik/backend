@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body>
+<div class="container">
+  <h1><%= title %></h1>
+
+  <div class="top-links">
+    <a class="btn btn-primary" href="/apartments/new">Додати квартиру</a>
+    <a class="btn btn-secondary" href="/api/apartments" target="_blank">JSON</a>
+  </div>
+
+  <% if (apartments.length === 0) { %>
+    <div class="card">
+      <p>У базі поки немає жодної квартири.</p>
+    </div>
+  <% } %>
+
+  <div class="apartments-list">
+    <% apartments.forEach(apartment => { %>
+      <div class="card">
+        <h2><%= apartment.district %> район</h2>
+
+        <p><strong>Поверх:</strong> <%= apartment.floor %></p>
+        <p><strong>Площа:</strong> <%= apartment.area %> м²</p>
+        <p><strong>Кількість кімнат:</strong> <%= apartment.rooms %></p>
+        <p><strong>Власник:</strong> <%= apartment.owner.fullName %></p>
+        <p><strong>Телефон:</strong> <%= apartment.owner.phone %></p>
+        <p><strong>Email:</strong> <%= apartment.owner.email %></p>
+        <p><strong>Ціна:</strong> $<%= apartment.price %></p>
+
+        <div class="actions">
+          <a class="btn btn-secondary" href="/apartments/<%= apartment._id %>">Детальніше</a>
+          <a class="btn btn-warning" href="/apartments/<%= apartment._id %>/edit">Редагувати</a>
+
+          <form action="/apartments/<%= apartment._id %>?_method=DELETE" method="POST" class="inline-form">
+            <button class="btn btn-danger" type="submit" onclick="return confirm('Видалити квартиру?')">Видалити</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+</body>
+</html>

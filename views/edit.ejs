@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+<body>
+<div class="container">
+    <h1><%= title %></h1>
+    <div class="centre-wrapper">
+        <div class="card">
+            <form action="/apartments/<%= apartment._id %>?_method=PUT" method="POST">
+                <label>Район:</label>
+                <input type="text" name="district" value="<%= apartment.district %>" required />
+
+                <label>Поверх:</label>
+                <input type="number" name="floor" min="1" value="<%= apartment.floor %>" required />
+
+                <label>Площа (м²):</label>
+                <input type="number" name="area" min="1" value="<%= apartment.area %>" required />
+
+                <label>Кількість кімнат:</label>
+                <input type="number" name="rooms" min="1" value="<%= apartment.rooms %>" required />
+
+                <label>ПІБ власника:</label>
+                <input type="text" name="ownerFullName" value="<%= apartment.owner.fullName %>" required />
+
+                <label>Телефон власника:</label>
+                <input type="text" name="ownerPhone" value="<%= apartment.owner.phone %>" required />
+
+                <label>Email власника:</label>
+                <input type="email" name="ownerEmail" value="<%= apartment.owner.email %>" required />
+
+                <label>Ціна ($):</label>
+                <input type="number" name="price" min="0" value="<%= apartment.price %>" required />
+
+                <div class="actions">
+                    <button class="btn btn-warning" type="submit">Оновити</button>
+                    <a class="btn btn-secondary" href="/">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
