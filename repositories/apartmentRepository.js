@@ -15,10 +15,14 @@ class ApartmentRepository {
     }
 
     async updateById(id, apartmentData) {
-        return Apartment.findByIdAndUpdate(id, apartmentData, {
-            new: true,
-            runValidators: true
-        });
+        return Apartment.findByIdAndUpdate(
+            id,
+            { $set: apartmentData },
+            {
+                new: true,
+                runValidators: true
+            }
+        );
     }
 
     async deleteById(id) {

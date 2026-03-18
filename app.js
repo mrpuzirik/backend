@@ -6,10 +6,14 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
+const { graphqlHTTP } = require('express-graphql');
 
 const indexRouter = require('./routes/index');
 const apartmentsRouter = require('./routes/apartments');
 const apiRouter = require('./routes/api');
+
+const graphqlSchema = require('./graphql/typeDefs');
+const graphqlResolvers = require('./graphql/resolvers');
 
 const apartmentService = require('./services/apartmentService');
 const seedData = require('./seed/seedData');
@@ -44,6 +48,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/apartments', apartmentsRouter);
 app.use('/api', apiRouter);
+
+app.use('/graphql', graphqlHTTP({
+    schema: graphqlSchema,
+    rootValue: graphqlResolvers,
+    graphiql: true
+}));
 
 app.use((req, res, next) => {
     res.status(404).render('error', {
